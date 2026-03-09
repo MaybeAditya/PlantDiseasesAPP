@@ -1,50 +1,37 @@
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-export default async function handler(req,res){
+export default async function handler(req, res) {
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
 
-if(req.method!=="POST"){
-return res.status(405).json({error:"Method not allowed"})
-}
+  try {
+    const { image } = req.body;
+    if (!image) return res.status(400).json({ message: 'No image provided' });
 
-const { image } = req.body
+    // Initialize Gemini API
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+    // Strict prompt to ensure we get parsable JSON back
+    const prompt = `Analyze this leaf image for diseases. Return ONLY a raw JSON object with this exact structure: {"prediction": "Disease Name or Healthy", "confidence": 95, "summary": "Short explanation", "recommendations": ["Tip 1", "Tip 2"]}`;
 
-const model = genAI.getGenerativeModel({
-model:"gemini-1.5-flash"
-})
+    const result = await model.generateContent([
+      prompt,
+      { inlineData: { data: image, mimeType: "image/jpeg" } } 
+    ]);
 
-const prompt = `
-You are a plant disease expert.
+    const responseText = result.response.text();
+    
+    // Clean up any markdown formatting Gemini might add
+    const cleanJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+    const data = JSON.parse(cleanJson);
 
-Analyze the leaf image.
+    res.status(200).json(data);
 
-Return JSON ONLY:
-
-{
-"prediction":"",
-"confidence":number,
-"summary":"",
-"recommendations":[]
-}
-`
-
-const result = await model.generateContent([
-prompt,
-{
-inlineData:{
-data:image,
-mimeType:"image/jpeg"
-}
-}
-])
-
-let text = result.response.text()
-
-text = text.replace(/```json|```/g,"")
-
-const json = JSON.parse(text)
-
-res.status(200).json(json)
-
+  } catch (error) {
+    console.error("API Error:", error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 }
