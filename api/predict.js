@@ -21,7 +21,7 @@ export default async function handler(req, res) {
 
     // 3. Initialize Gemini
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     // 4. Force strict JSON output
     const prompt = `Analyze this leaf image for diseases. 
