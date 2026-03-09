@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LeafAI Enterprise</title>
   <link rel="stylesheet" href="style.css">
+  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -16,25 +17,50 @@
     <h1>🌿 LeafAI Dashboard</h1>
     
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('analysis')">Analysis Engine</button>
-      <button class="tab-btn" onclick="switchTab('infra')">System Health</button>
-      <button class="tab-btn" onclick="switchTab('map')">Live Threat Map</button>
+      <button class="tab-btn active" onclick="switchTab('analysis', event)">Analysis Engine</button>
+      <button class="tab-btn" onclick="switchTab('infra', event)">System Health</button>
+      <button class="tab-btn" onclick="switchTab('map', event)">Live Threat Map</button>
     </div>
 
     <div id="analysis" class="tab-content active">
-      <div class="upload-box" id="dropArea"><input type="file" id="fileInput" accept="image/*"><p>Upload Leaf Image</p></div>
-      <div class="image-wrapper hidden" id="imageWrapper"><img id="preview"><div class="scanner-line hidden" id="scannerLine"></div></div>
-      <div id="terminalOutput" class="terminal hidden">> System idle...</div>
-      <div class="buttons"><button id="analyzeBtn">Run Analysis</button><button id="clearBtn">Clear</button></div>
+      <div class="upload-box" id="dropArea">
+        <input type="file" id="fileInput" accept="image/*">
+        <p>Click or Drag & Drop Leaf Image</p>
+      </div>
       
-      <div id="cacheMetrics" class="cache-terminal">
+      <div class="image-wrapper hidden" id="imageWrapper">
+        <img id="preview">
+        <div class="scanner-line hidden" id="scannerLine"></div>
+      </div>
+
+      <div id="terminalOutput" class="terminal hidden">
+        > System idle...
+      </div>
+      
+      <div id="cacheMetrics" class="cache-terminal hidden">
          > Distributed Cache initialized...
+      </div>
+
+      <div class="buttons">
+        <button id="analyzeBtn">Run Analysis</button>
+        <button id="clearBtn">Clear</button>
       </div>
 
       <div id="result" class="hidden">
         <div class="results-grid">
-           <div class="text-results"><h2 id="prediction"></h2><p id="confidence"></p><div class="bar"><div id="fill"></div></div><p id="severity"></p><p id="summary"></p></div>
-           <div class="chart-container"><canvas id="radarChart"></canvas></div>
+           <div class="text-results">
+             <h2 id="prediction"></h2>
+             <p id="confidence"></p>
+             <div class="bar"><div id="fill"></div></div>
+             <p id="health"></p>
+             <p id="severity"></p>
+             <p id="summary"></p>
+             <h3>Action Plan</h3>
+             <ul id="recs"></ul>
+           </div>
+           <div class="chart-container">
+             <canvas id="radarChart"></canvas>
+           </div>
         </div>
       </div>
     </div>
@@ -43,27 +69,31 @@
       <h3>Live Server Topology</h3>
       <p>Routing traffic across active clusters</p>
       <div class="topology-graph">
-        <div class="node lb">Layer 7 Load Balancer<br><small>Active</small></div>
-        <div class="connectors">
-          <div class="line"></div>
-          <div class="line"></div>
-        </div>
+        <div class="node lb">Layer 7 Load Balancer<br><small>Active / Routing</small></div>
+        <div class="connectors"></div>
         <div class="node-row">
-          <div class="node inference">Inference Cluster Alpha<br><small>GPU: 82%</small></div>
-          <div class="node vector">Vector DB Node 1<br><small>Synced</small></div>
+          <div class="node inference">Inference Node Alpha<br><small>GPU Load: 82%</small></div>
+          <div class="node vector">Vector DB Cluster<br><small>Synced</small></div>
         </div>
       </div>
     </div>
 
     <div id="map" class="tab-content hidden">
       <h3>Agricultural Threat Heatmap</h3>
-      <div id="leafletMap" style="height: 400px; width: 100%; border-radius: 12px; border: 1px solid #22c55e;"></div>
+      <div id="leafletMap" style="height: 450px; width: 100%; border-radius: 12px; border: 1px solid var(--box-border);"></div>
+    </div>
+  </div>
+
+  <div id="errorModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>⚠️ Server Busy</h3>
+      <p>Our AI clusters are experiencing high traffic. Please retry.</p>
+      <button id="closeModal">Got it</button>
     </div>
   </div>
 
   <div class="ticker-wrap">
-    <div class="ticker-move" id="liveTicker">
-      </div>
+    <div class="ticker-move" id="liveTicker"></div>
   </div>
 
   <script src="script.js"></script>

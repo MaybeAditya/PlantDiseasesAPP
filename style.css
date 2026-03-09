@@ -1,4 +1,4 @@
-/* Define Dark Theme (Default) */
+/* Core Variables */
 :root {
   --bg-color: #020617;
   --text-color: #ffffff;
@@ -7,7 +7,6 @@
   --panel-bg: #0f172a;
 }
 
-/* Define Light Theme */
 [data-theme="light"] {
   --bg-color: #f8fafc;
   --text-color: #0f172a;
@@ -23,180 +22,66 @@ body {
   text-align: center; 
   transition: background 0.3s, color 0.3s;
   margin: 0;
+  padding-bottom: 40px; /* Space for ticker */
 }
 
 .container { max-width: 900px; margin: auto; padding: 40px; }
 
-/* Theme Button */
+/* Theme Toggle */
 .theme-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: transparent;
-  border: 1px solid var(--box-border);
-  color: var(--text-color);
+  position: absolute; top: 20px; right: 20px;
+  background: transparent; border: 1px solid var(--box-border); color: var(--text-color);
 }
 
-.upload-box { 
-  border: 2px dashed var(--box-border); 
-  padding: 40px; 
-  border-radius: 12px; 
-  cursor: pointer; 
-  background: var(--panel-bg);
-  transition: background 0.3s;
-}
-.upload-box input { display: none; }
-
-img { max-width: 400px; border-radius: 12px; margin-top: 20px; display: none; margin-left: auto; margin-right: auto; }
-
-button { 
-  padding: 10px 20px; 
-  margin: 10px; 
-  background: var(--btn-bg); 
-  border: none; 
-  border-radius: 8px; 
-  color: white; 
-  cursor: pointer; 
-  transition: opacity 0.2s;
-}
-button:hover { opacity: 0.8; }
-button:disabled { background: #64748b; cursor: not-allowed; }
-
-.bar { height: 10px; background: #cbd5e1; border-radius: 10px; margin: 10px 0; }
-#fill { height: 10px; background: var(--btn-bg); width: 0%; border-radius: 10px; transition: width 0.3s ease; }
-
-.hidden { display: none !important; }
-
-/* Modal Styles */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-.modal-content {
-  background: var(--bg-color);
-  padding: 30px;
-  border-radius: 12px;
-  border: 1px solid var(--box-border);
-  max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-}
-/* ... Keep your existing CSS variables and base styles ... */
-
-/* Layout for the results to sit next to the chart */
-.results-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  text-align: left;
-  background: var(--panel-bg);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid var(--box-border);
-}
-
-@media(min-width: 768px) {
-  .results-grid { flex-direction: row; }
-  .text-results { flex: 1; }
-  .chart-container { flex: 1; min-height: 300px; }
-}
-
-/* Scanner Image Wrapper */
-.image-wrapper {
-  position: relative;
-  max-width: 400px;
-  margin: 20px auto;
-  border-radius: 12px;
-  overflow: hidden;
-}
-.image-wrapper.scanning img {
-  filter: brightness(0.5) contrast(1.2); /* Darkens image during scan */
-}
-
-/* The Hollywood Laser */
-.scanner-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: #22c55e;
-  box-shadow: 0 0 15px 5px rgba(34, 197, 94, 0.5);
-  animation: scan 2s infinite linear alternate;
-  z-index: 10;
-}
-@keyframes scan {
-  0% { top: 0%; }
-  100% { top: 100%; }
-}
-
-/* Fake Terminal */
-.terminal {
-  background: #000;
-  color: #22c55e;
-  font-family: 'Courier New', Courier, monospace;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 15px;
-  text-align: left;
-  font-size: 14px;
-  height: 20px;
-  overflow: hidden;
-  border: 1px solid #333;
-}
 /* Tabs */
 .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-.tab-btn { background: var(--panel-bg); color: var(--text-color); border: 1px solid var(--box-border); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+.tab-btn { background: var(--panel-bg); color: var(--text-color); border: 1px solid var(--box-border); padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
 .tab-btn.active { background: var(--btn-bg); color: white; }
 .tab-content.hidden { display: none; }
 
-/* The Live Ticker */
-.ticker-wrap {
-  position: fixed;
-  bottom: 0; left: 0; width: 100%;
-  background: #000;
-  border-top: 1px solid #22c55e;
-  overflow: hidden;
-  height: 30px;
-  line-height: 30px;
-  font-family: monospace;
-  color: #22c55e;
-  z-index: 100;
-}
-.ticker-move {
-  display: flex;
-  white-space: nowrap;
-  animation: ticker 20s linear infinite;
-}
-.ticker-item { margin-right: 50px; }
-@keyframes ticker {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
+/* Upload & Main UI */
+.upload-box { border: 2px dashed var(--box-border); padding: 40px; border-radius: 12px; cursor: pointer; background: var(--panel-bg); }
+.upload-box input { display: none; }
+button { padding: 10px 20px; margin: 10px; background: var(--btn-bg); border: none; border-radius: 8px; color: white; cursor: pointer; transition: opacity 0.2s; }
+button:hover { opacity: 0.8; }
+button:disabled { background: #64748b; cursor: not-allowed; }
+
+/* Scanner Animations */
+.image-wrapper { position: relative; max-width: 400px; margin: 20px auto; border-radius: 12px; overflow: hidden; }
+.image-wrapper img { width: 100%; display: block; }
+.image-wrapper.scanning img { filter: brightness(0.5) contrast(1.2); }
+.scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: #22c55e; box-shadow: 0 0 15px 5px rgba(34, 197, 94, 0.5); animation: scan 2s infinite linear alternate; z-index: 10; }
+@keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+
+/* Terminals */
+.terminal { background: #000; color: #22c55e; font-family: monospace; padding: 10px; border-radius: 8px; margin-top: 15px; text-align: left; font-size: 14px; height: 20px; overflow: hidden; border: 1px solid #333; }
+.cache-terminal { background: #000; color: #a855f7; font-family: monospace; padding: 8px; border-radius: 8px; margin-top: 10px; font-size: 13px; text-align: left; border: 1px solid #333; }
+
+/* Results Grid */
+.results-grid { display: flex; flex-direction: column; gap: 20px; text-align: left; background: var(--panel-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--box-border); margin-top: 20px; }
+@media(min-width: 768px) { .results-grid { flex-direction: row; } .text-results { flex: 1; } .chart-container { flex: 1; min-height: 300px; display: flex; align-items: center; justify-content: center; } }
+.bar { height: 10px; background: #cbd5e1; border-radius: 10px; margin: 10px 0; }
+#fill { height: 10px; background: var(--btn-bg); width: 0%; border-radius: 10px; transition: width 0.3s ease; }
+
+/* Modal */
+.modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal-content { background: var(--bg-color); padding: 30px; border-radius: 12px; border: 1px solid var(--box-border); max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+.hidden { display: none !important; }
+
+/* Indian Ticker */
+.ticker-wrap { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1px solid var(--box-border); overflow: hidden; height: 35px; line-height: 35px; font-family: monospace; color: var(--box-border); z-index: 100; }
+.ticker-move { display: flex; white-space: nowrap; animation: ticker 25s linear infinite; }
+.ticker-item { margin-right: 60px; font-size: 14px; }
+@keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
 
 /* Topology Graph */
-.topology-graph {
-  display: flex; flex-direction: column; align-items: center; margin-top: 40px;
-}
-.node {
-  padding: 15px 25px; border-radius: 8px; border: 2px solid; background: #0f172a; font-weight: bold;
-}
-.node.lb { border-color: #3b82f6; box-shadow: 0 0 15px #3b82f6; animation: pulseBlue 2s infinite; }
-.node.inference { border-color: #22c55e; box-shadow: 0 0 10px #22c55e; animation: pulseGreen 1.5s infinite; }
-.node.vector { border-color: #a855f7; box-shadow: 0 0 10px #a855f7; animation: pulsePurple 3s infinite; }
+.topology-graph { display: flex; flex-direction: column; align-items: center; margin-top: 40px; }
+.node { padding: 15px 25px; border-radius: 8px; border: 2px solid; background: #0f172a; font-weight: bold; color: white; }
+.node.lb { border-color: #3b82f6; animation: pulseBlue 2s infinite; }
+.node.inference { border-color: #22c55e; animation: pulseGreen 1.5s infinite; }
+.node.vector { border-color: #a855f7; animation: pulsePurple 3s infinite; }
 .node-row { display: flex; gap: 50px; margin-top: 20px; }
-.connectors { height: 40px; width: 2px; background: #334155; position: relative; }
-
-/* Cache Terminal */
-.cache-terminal {
-  background: #000; color: #a855f7; font-family: monospace; padding: 5px; border-radius: 4px; margin-top: 10px; font-size: 12px; height: 18px; overflow: hidden;
-}
-
+.connectors { height: 40px; width: 2px; background: #334155; }
 @keyframes pulseBlue { 0%, 100% { box-shadow: 0 0 5px #3b82f6; } 50% { box-shadow: 0 0 20px #3b82f6; } }
 @keyframes pulseGreen { 0%, 100% { box-shadow: 0 0 5px #22c55e; } 50% { box-shadow: 0 0 20px #22c55e; } }
 @keyframes pulsePurple { 0%, 100% { box-shadow: 0 0 5px #a855f7; } 50% { box-shadow: 0 0 20px #a855f7; } }
