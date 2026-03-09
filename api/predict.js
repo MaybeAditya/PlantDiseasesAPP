@@ -34,10 +34,30 @@ export default async function handler(req, res) {
       "recommendations": ["Tip 1", "Tip 2"]
     }`;
 
-    const result = await model.generateContent([
-      prompt,
-      { inlineData: { data: image, mimeType: "image/jpeg" } } 
-    ]);
+   // Replace your existing 'const result = await model.generateContent(...)' with this:
+    let result;
+    let retries = 3;
+    let delay = 1000; // Start with a 1-second delay
+
+    while (retries > 0) {
+      try {
+        result = await model.generateContent([
+          prompt,
+          { inlineData: { data: image, mimeType: "image/jpeg" } } 
+        ]);
+        break; // If it succeeds, break out of the retry loop
+      } catch (apiError) {
+        if (apiError.status === 503 && retries > 1) {
+          console.warn(`Gemini 503 error. Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          retries--;
+          delay *= 2; // Double the wait time for the next attempt (Exponential Backoff)
+        } else {
+          // If it's not a 503, or we ran out of retries, throw the error down to your main catch block
+          throw apiError; 
+        }
+      }
+    }
 
     const responseText = result.response.text();
     
