@@ -7,17 +7,22 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <button id="themeToggle" class="theme-btn">☀️ Light Mode</button>
+
   <div class="container">
     <h1>🌿 LeafAI</h1>
     <div class="upload-box" id="dropArea">
       <input type="file" id="fileInput" accept="image/*">
       <p>Click or Drag & Drop Leaf Image</p>
     </div>
+    
     <img id="preview">
+    
     <div class="buttons">
       <button id="analyzeBtn">Run Analysis</button>
       <button id="clearBtn">Clear</button>
     </div>
+    
     <div id="result" class="hidden">
       <h2 id="prediction"></h2>
       <p id="confidence"></p>
@@ -29,6 +34,15 @@
       <ul id="recs"></ul>
     </div>
   </div>
+
+  <div id="errorModal" class="modal hidden">
+    <div class="modal-content">
+      <h3>⚠️ Server Busy</h3>
+      <p>Our AI models are currently experiencing high traffic. Please wait a moment and try your analysis again!</p>
+      <button id="closeModal">Got it</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>

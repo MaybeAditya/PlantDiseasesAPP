@@ -5,7 +5,33 @@ const clearBtn = document.getElementById("clearBtn");
 const dropArea = document.getElementById("dropArea");
 const resultDiv = document.getElementById("result");
 
-// Make the upload box clickable
+// New elements for Modal and Theme
+const errorModal = document.getElementById("errorModal");
+const closeModalBtn = document.getElementById("closeModal");
+const themeToggle = document.getElementById("themeToggle");
+
+// --- Theme Toggle Logic ---
+themeToggle.onclick = () => {
+  const currentTheme = document.body.getAttribute("data-theme");
+  if (currentTheme === "light") {
+    document.body.removeAttribute("data-theme");
+    themeToggle.innerText = "☀️ Light Mode";
+  } else {
+    document.body.setAttribute("data-theme", "light");
+    themeToggle.innerText = "🌙 Dark Mode";
+  }
+};
+
+// --- Modal Logic ---
+closeModalBtn.onclick = () => {
+  errorModal.classList.add("hidden");
+};
+
+function showErrorModal() {
+  errorModal.classList.remove("hidden");
+}
+
+// --- Upload Logic ---
 dropArea.onclick = () => fileInput.click();
 
 let file;
@@ -21,7 +47,8 @@ fileInput.onchange = e => {
 
 analyzeBtn.onclick = async () => {
   if (!file) {
-    alert("Please upload an image first.");
+    // Keep a mild alert just for empty uploads, or you can make a second modal for this!
+    alert("Please upload an image first."); 
     return;
   }
 
@@ -34,7 +61,6 @@ analyzeBtn.onclick = async () => {
     const base64 = reader.result.split(",")[1];
     
     try {
-      // Fetch from OUR backend, not Gemini
       const res = await fetch("/api/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,10 +68,12 @@ analyzeBtn.onclick = async () => {
       });
 
       if (!res.ok) {
-        // Parse the JSON error from the backend
+        // Log the actual error silently for your own debugging
         const errorData = await res.json();
-        console.error("Server crashed:", errorData);
-        alert(`Backend error: ${errorData.details}`);
+        console.error("Silent Backend Log:", errorData);
+        
+        // Show the beautiful, generic modal to the user instead of the ugly alert
+        showErrorModal();
         return;
       }
 
@@ -54,7 +82,7 @@ analyzeBtn.onclick = async () => {
 
     } catch (error) {
       console.error("Network error:", error);
-      alert("Failed to connect to the server.");
+      showErrorModal(); // Show modal on network drops too
     } finally {
       analyzeBtn.innerText = "Run Analysis";
       analyzeBtn.disabled = false;
