@@ -48,8 +48,12 @@ export default async function handler(req, res) {
     // 6. Send the clean data back to your frontend
     return res.status(200).json(data);
 
-  } catch (error) {
+  }  catch (error) {
     console.error("Backend Error:", error);
-    return res.status(500).json({ error: 'Failed to process image' });
+    // Send the actual error message back to the frontend so we can see it
+    return res.status(500).json({ 
+      error: 'Failed to process image', 
+      details: error.message || error.toString() 
+    });
   }
 }

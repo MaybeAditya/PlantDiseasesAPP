@@ -42,9 +42,10 @@ analyzeBtn.onclick = async () => {
       });
 
       if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Server crashed:", errorText);
-        alert("Backend error! Check the console.");
+        // Parse the JSON error from the backend
+        const errorData = await res.json();
+        console.error("Server crashed:", errorData);
+        alert(`Backend error: ${errorData.details}`);
         return;
       }
 
