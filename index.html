@@ -1,90 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LeafAI — Demo</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeafAI</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>🌿 LeafAI — Demo</h1>
-      <div class="controls">
-        <label class="theme-toggle">
-          <input id="themeToggle" type="checkbox" />
-          <span>Dark</span>
-        </label>
-      </div>
-    </header>
-
-    <main>
-      <section id="uploadCard" class="upload-card">
-        <div id="dropArea" class="drop-area" tabindex="0">
-          <div class="upload-inner">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden>
-              <path d="M12 3v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M8 7l4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M20 21H4a1 1 0 0 1-1-1V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            <p class="title">Drag & Drop Leaf Image</p>
-            <p class="muted">or click to select • high-res photos work best</p>
-            <input id="fileInput" type="file" accept="image/*" />
-          </div>
-        </div>
-      </section>
-
-      <section id="previewArea" class="preview-area hidden">
-        <div class="preview-panel">
-          <div class="image-wrapper" id="imageWrapper">
-            <img id="previewImage" src="" alt="preview" />
-            <div class="hud-zone" id="hud">
-              <div class="hud-overlay"></div>
-              <div class="laser"></div>
-              <div class="crosshairs">
-                <span style="top:18%; left:22%" class="cross"></span>
-                <span style="top:42%; left:60%" class="cross"></span>
-                <span style="top:70%; left:35%" class="cross"></span>
-              </div>
-              <div class="processing-feed" id="procFeed"></div>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button id="analyzeBtn" class="btn">Run Analysis</button>
-            <button id="clearBtn" class="btn ghost">Clear</button>
-          </div>
-        </div>
-
-        <div id="skeleton" class="skeleton hidden" aria-hidden>
-          <div class="skeleton-box"></div>
-          <div class="skeleton-box short"></div>
-          <div class="skeleton-box"></div>
-        </div>
-
-        <div id="resultCard" class="result hidden" aria-hidden>
-          <div class="result-main">
-            <h2 id="prediction">—</h2>
-            <p id="confidence" class="muted">Confidence: —</p>
-            <div class="bar"><div id="barFill" class="fill"></div></div>
-
-            <div class="stats">
-              <div>Health Score: <strong id="health">—</strong></div>
-              <div>Severity: <strong id="severity">—</strong></div>
-            </div>
-
-            <p id="summary" class="summary muted">—</p>
-
-            <h4>Recommendations</h4>
-            <ul id="recs"></ul>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer muted">Deploy tip: set GEMINI_API_KEY in Vercel Environment Variables for real AI results (do NOT put the key in client code).</footer>
+  <div class="container">
+    <h1>🌿 LeafAI</h1>
+    <div class="upload-box" id="dropArea">
+      <input type="file" id="fileInput" accept="image/*">
+      <p>Click or Drag & Drop Leaf Image</p>
+    </div>
+    <img id="preview">
+    <div class="buttons">
+      <button id="analyzeBtn">Run Analysis</button>
+      <button id="clearBtn">Clear</button>
+    </div>
+    <div id="result" class="hidden">
+      <h2 id="prediction"></h2>
+      <p id="confidence"></p>
+      <div class="bar"><div id="fill"></div></div>
+      <p id="health"></p>
+      <p id="severity"></p>
+      <p id="summary"></p>
+      <h3>Recommendations</h3>
+      <ul id="recs"></ul>
+    </div>
   </div>
-
-  <script src="/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

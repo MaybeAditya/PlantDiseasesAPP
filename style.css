@@ -1,0 +1,9 @@
+body { background:#020617; font-family:Arial; color:white; text-align:center; }
+.container { max-width:900px; margin:auto; padding:40px; }
+.upload-box { border:2px dashed #22c55e; padding:40px; border-radius:12px; cursor:pointer; }
+.upload-box input { display:none; }
+img { max-width:400px; border-radius:12px; margin-top:20px; display: none; margin-left: auto; margin-right: auto; }
+button { padding:10px 20px; margin:10px; background:#22c55e; border:none; border-radius:8px; color:white; cursor:pointer; }
+.bar { height:10px; background:#1e293b; border-radius:10px; margin:10px 0; }
+#fill { height:10px; background:#22c55e; width:0%; border-radius:10px; transition: width 0.3s ease; }
+.hidden { display:none; }
